@@ -9,8 +9,8 @@
 支持沪深 A 股全图、沪深 300、中证 A50、中证 A500、A 股主板、创业板、科创板等多个市场范围切换，也可以按一级行业板块单独查看热力图，或用股票名称/代码添加自选列表；涨跌区间支持当日、近 5 日、近 20 日、今年以来等多个周期，适合作为个人盘前盘后复盘工具，或嵌入财经站点、量化研究平台的市场概览模块。
 
 <p align="center">
-  <a href="https://map.wenyuanw.me">
-    <img src="https://img.shields.io/badge/在线预览-map.wenyuanw.me-1f6feb?style=for-the-badge&logo=vercel&logoColor=white" alt="在线预览" />
+  <a href="https://dapan.app">
+    <img src="https://img.shields.io/badge/在线预览-dapan.app-1f6feb?style=for-the-badge&logo=vercel&logoColor=white" alt="在线预览" />
   </a>
   &nbsp;
   <a href="https://vercel.com/new/clone?repository-url=https://github.com/wenyuanw/a-share-heatmap">

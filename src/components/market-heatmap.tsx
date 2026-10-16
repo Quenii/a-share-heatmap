@@ -3065,8 +3065,8 @@ export function MarketHeatmap({ locale: initialLocale }: { locale: Locale }) {
           : `${messages.title}｜${getPeriodLabel(messages, period)} ${formatShareTimestamp(updatedAt)}`;
       const shareUrlLight = isLightMode ? "rgba(15, 23, 42, 0.96)" : "rgba(247, 250, 252, 0.98)";
       const shareUrlParts: { text: string; fillStyle: string }[] = [
-        { text: "map.wenyuanw", fillStyle: shareUrlLight },
-        { text: ".me", fillStyle: "#22c55e" },
+        { text: "dapan", fillStyle: shareUrlLight },
+        { text: ".app", fillStyle: "#22c55e" },
       ];
 
       const headerY = topPadding / 2;
@@ -4332,7 +4332,7 @@ export function MarketHeatmap({ locale: initialLocale }: { locale: Locale }) {
                   )}
                 >
                   <GitHubMark className="size-3.5 shrink-0 opacity-80" />
-                  <span className="min-w-0 truncate">map.wenyuanw.me</span>
+                  <span className="min-w-0 truncate">dapan.app</span>
                 </a>
               </div>
 
