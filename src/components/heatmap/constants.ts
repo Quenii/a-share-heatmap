@@ -52,6 +52,8 @@ export const flatThreshold = 0.1;
 export const githubProjectUrl = "https://github.com/wenyuanw/a-share-heatmap";
 export const authorEmail = "hi@wenyuanw.me";
 export const authorMailto = `mailto:${authorEmail}`;
+// 赞赏码：完整封面图，不做裁剪，放大展示时码本身约 220px。
+export const rewardCoverImageUrl = "/sponsor/reward-cover.jpg";
 
 export const themeColors: Record<
   ThemeColorKey,

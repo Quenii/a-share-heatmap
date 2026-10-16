@@ -87,6 +87,7 @@ import { GitHubMark } from "@/components/heatmap/github-mark";
 import { InspectorHeaderSparkline, InspectorSortControls } from "@/components/heatmap/inspector-parts";
 import { MobileStockSheet } from "@/components/heatmap/mobile-stock-sheet";
 import { HeatmapLoadingOverlay } from "@/components/heatmap/loading-overlay";
+import { RewardTipTrigger } from "@/components/heatmap/reward-tip";
 import { FilterPanel, FilterPopover } from "@/components/heatmap/filter-panel";
 import { getCanvasViewportBounds, intersectsBounds } from "@/components/heatmap/canvas-viewport";
 import {
@@ -1303,6 +1304,13 @@ export function MarketHeatmap({ locale: initialLocale }: { locale: Locale }) {
     setFiltersOpen(false);
     setSettingsTab("watchlist");
     setSettingsOpen(true);
+  }, []);
+
+  const openRewardSettings = useCallback(() => {
+    setFiltersOpen(false);
+    setSettingsTab("project");
+    setSettingsOpen(true);
+    setSidebarOpen(false);
   }, []);
 
   const addWatchlistItem = useCallback(
@@ -3474,12 +3482,13 @@ export function MarketHeatmap({ locale: initialLocale }: { locale: Locale }) {
             >
               <div className={cn("flex items-center justify-between gap-2 border-b border-border px-2 py-1.5 sm:px-2.5", isEnglish && "py-1")}>
                 <div className="flex min-w-0 items-center gap-2">
-                  <img
-                    src="/icon.svg"
-                    alt=""
-                    className="size-7 shrink-0"
-                    decoding="async"
-                  />
+                  <RewardTipTrigger
+                    messages={messages}
+                    onOpen={openRewardSettings}
+                    className="rounded transition-opacity hover:opacity-85"
+                  >
+                    <img src="/icon.svg" alt="" className="size-7 shrink-0" decoding="async" />
+                  </RewardTipTrigger>
                   <h2
                     className={cn(
                       "min-w-0 truncate whitespace-nowrap font-semibold leading-tight tracking-[0.01em]",
@@ -4298,6 +4307,17 @@ export function MarketHeatmap({ locale: initialLocale }: { locale: Locale }) {
                 >
                   {isLightMode ? <Moon className="size-3.5" /> : <Sun className="size-3.5" />}
                 </button>
+                <RewardTipTrigger
+                  messages={messages}
+                  onOpen={openRewardSettings}
+                  side="top"
+                  className={cn(
+                    "size-7 rounded-full text-muted-foreground focus-visible:text-brand",
+                    isLightMode
+                      ? "hover:bg-muted focus-visible:bg-muted"
+                      : "text-slate-400 hover:bg-white/5 focus-visible:bg-white/5"
+                  )}
+                />
                 <a
                   href={githubProjectUrl}
                   target="_blank"

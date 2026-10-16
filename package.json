@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.31",
+    "@radix-ui/react-tooltip": "^1.4.1",
     "@vercel/analytics": "^2.0.1",
     "ai": "^7.0.68",
     "clsx": "^2.1.1",

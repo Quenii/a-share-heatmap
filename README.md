@@ -163,6 +163,18 @@ pnpm refresh:data  # 校验通过后更新两份内置快照
 - [TradingView Stock Heatmap](https://tw.tradingview.com/heatmap/stock) — 多市场可切换的股票热力图，交互体验流畅。
 - [52ETF 市场云图](https://52etf.site/) — 中文圈做得很用心的 A 股大盘云图站点。
 
+## 赞赏支持
+
+这个项目是业余时间维护的。如果这张热力图对你的复盘有帮助，可以扫码请作者喝杯咖啡：
+
+<p align="center">
+  <img src="./public/sponsor/reward-cover.jpg" alt="赞赏码：请作者喝杯咖啡" width="480" />
+</p>
+
+也可以直接通过 [GitHub Sponsors](https://github.com/sponsors/wenyuanw) 支持。
+
+站点内同样可以扫：把鼠标移到侧边栏顶部的 logo，或底部 GitHub 图标左侧的咖啡图标上，赞赏码会以浮层弹出；「设置」→「项目」里也有完整版（手机端默认展开，点击图片可放大）。
+
 ## License
 
 MIT

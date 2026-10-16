@@ -316,6 +316,11 @@ export const messages = {
       projectAdDescription:
         "This corner is currently empty, staring into the void. If you have something cool to show A-share map watchers, drop an email — maybe your logo lands here.",
       projectAdCta: "Inquire about this spot",
+      projectSupportTitle: "Buy the author a coffee",
+      projectSupportDescription:
+        "This project is maintained in spare time. If the heatmap helps your review, you can scan the code to support it.",
+      projectSupportScanHint: "Scan with WeChat, any amount is appreciated.",
+      projectSupportZoomHint: "Click the image to enlarge it.",
       mobileTapHint: "Tap any block to see stock details.",
       mobileOpenInXueqiu: "Open on Xueqiu",
       closeSheet: "Close",
@@ -646,6 +651,11 @@ export const messages = {
       projectAdDescription:
         "这里暂时空着，有点寂寞。如果你有想给看盘人看见的东西，发封邮件过来——说不定下次刷新，你的 Logo 就坐在这儿了。",
       projectAdCta: "来问问这个位子",
+      projectSupportTitle: "请作者喝杯咖啡",
+      projectSupportDescription:
+        "项目是业余时间维护的。如果这张热力图对你的复盘有帮助，可以扫码支持一下。",
+      projectSupportScanHint: "用微信扫一扫，金额随意。",
+      projectSupportZoomHint: "点击图片可放大",
       mobileTapHint: "点击任意色块查看个股详情",
       mobileOpenInXueqiu: "雪球查看",
       closeSheet: "关闭",
