@@ -17,6 +17,7 @@ import { useHoverCapable, useIsMobile } from "./stream";
 import { type DisplayMode, type FilterOpenMode, type PriceColorMode, type SettingsTab, type ThemeColorKey } from "./types";
 import { GitHubMark } from "./github-mark";
 import { RewardPanel } from "./reward-tip";
+import { SupporterThanks } from "./supporter-thanks";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { HeatThemeSettingsPanel } from "./theme-settings-panel";
 
@@ -924,6 +925,8 @@ export function SettingsDrawer({
                     </div>
                   )}
                 </section>
+
+                <SupporterThanks messages={messages} />
 
                 <section className="relative overflow-hidden border border-dashed border-brand/45 bg-brand/8 p-3.5">
                   <div

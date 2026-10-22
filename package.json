@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "sync:supporters": "node scripts/sync-supporters.mjs",
     "refresh:data": "node scripts/refresh-market-data.mjs",
     "check:data": "node scripts/refresh-market-data.mjs --check"
   },
