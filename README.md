@@ -160,7 +160,7 @@ pnpm refresh:data  # 校验通过后更新两份内置快照
 这个项目是业余时间维护的。如果这张热力图对你的复盘有帮助，可以扫码请作者喝杯咖啡：
 
 <p align="center">
-  <img src="./public/sponsor/reward-cover.jpg" alt="赞赏码：请作者喝杯咖啡" width="480" />
+  <img src="./public/sponsor/reward-cover.jpg" alt="赞赏码：请作者喝杯咖啡" width="320" />
 </p>
 
 也可以直接通过 [GitHub Sponsors](https://github.com/sponsors/wenyuanw) 支持。
