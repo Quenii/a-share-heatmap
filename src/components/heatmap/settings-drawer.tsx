@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Bot, Check, ChevronDown, Coffee, Copy, ExternalLink, Info, Keyboard, Mail, Megaphone, Moon, Palette, Star, Sun, X } from "lucide-react";
 import { toast } from "sonner";
 import { WatchlistManager } from "@/components/watchlist-panel";
@@ -11,18 +11,16 @@ import { defaultShortcutBindings, formatShortcutKey, formatShortcutLabel, shortc
 import { watchlistMaxCount } from "@/lib/market-heatmap";
 import { type WatchlistItem } from "@/lib/watchlist";
 import { getChangeTextColor } from "./colors";
-import { authorMailto, githubProjectUrl, maxRefreshIntervalSeconds, minRefreshIntervalSeconds, rewardCoverImageUrl, themeColors } from "./constants";
+import { authorMailto, githubProjectUrl, maxRefreshIntervalSeconds, minRefreshIntervalSeconds, themeColors } from "./constants";
 import { getShortcutActionLabel } from "./format";
 import { useHoverCapable, useIsMobile } from "./stream";
 import { type DisplayMode, type FilterOpenMode, type PriceColorMode, type SettingsTab, type ThemeColorKey } from "./types";
 import { GitHubMark } from "./github-mark";
 import { RewardPanel } from "./reward-tip";
+import { RewardImage } from "./reward-image";
 import { SupporterThanks } from "./supporter-thanks";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { HeatThemeSettingsPanel } from "./theme-settings-panel";
-
-// 桌面端赞赏码浮层宽度：封面里二维码约占 40%，宽度直接决定码的可读大小。
-const rewardTipWidth = 384;
 
 export function SettingsDrawer({
   open,
@@ -102,12 +100,24 @@ export function SettingsDrawer({
   const [copiedWebmcpPrompt, setCopiedWebmcpPrompt] = useState<string | null>(null);
   const [intervalDraft, setIntervalDraft] = useState(() => String(refreshIntervalSeconds));
   const hoverCapable = useHoverCapable();
-  // 触屏设备（hoverCapable === false）没有 hover，赞赏码默认就地展开、可点击收起；
-  // 支持 hover 的设备由 Radix Tooltip 处理悬停浮层，卡片本身不展开。
+  // 桌面端悬停标题预览、点击放大；触屏设备默认在卡片内展开。
   // 解析前（null）按未展开渲染，避免首帧先展开再收起的闪动。
+  const rewardPanelId = useId();
   const touchOnly = hoverCapable === false;
   const [rewardInlineOpen, setRewardInlineOpen] = useState(false);
+  const [rewardPreviewOpen, setRewardPreviewOpen] = useState(false);
   const [rewardZoomOpen, setRewardZoomOpen] = useState(false);
+
+  const openRewardZoom = () => {
+    setRewardPreviewOpen(false);
+    setRewardZoomOpen(true);
+  };
+
+  useEffect(() => {
+    if (!open || tab !== "project") {
+      setRewardPreviewOpen(false);
+    }
+  }, [open, tab]);
 
   useEffect(() => {
     setRewardInlineOpen(hoverCapable === false);
@@ -274,6 +284,24 @@ export function SettingsDrawer({
   const themeLabels: Record<ThemeColorKey, string> = isEnglish
     ? { green: "Green", red: "Red", blue: "Blue", violet: "Violet" }
     : { green: "绿色", red: "红色", blue: "蓝色", violet: "紫色" };
+  const rewardTrigger = (
+    <button
+      type="button"
+      onClick={touchOnly ? () => setRewardInlineOpen((current) => !current) : openRewardZoom}
+      aria-expanded={touchOnly ? rewardInlineOpen : undefined}
+      aria-controls={touchOnly ? rewardPanelId : undefined}
+      aria-haspopup={touchOnly ? undefined : "dialog"}
+      className="inline-flex max-w-full items-center gap-3 text-left transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+    >
+      <span className="inline-flex size-9 shrink-0 items-center justify-center border border-border bg-muted/40">
+        <Coffee className="size-4" />
+      </span>
+      <span className="text-sm font-semibold">{messages.projectSupportTitle}</span>
+      {touchOnly && (
+        <ChevronDown className={cn("size-3.5 shrink-0 text-muted-foreground transition-transform", rewardInlineOpen && "rotate-180")} />
+      )}
+    </button>
+  );
 
   return (
     <div className="absolute inset-0 z-[10010] flex items-end justify-center bg-black/62 backdrop-blur-sm" role="dialog" aria-modal="true">
@@ -862,66 +890,37 @@ export function SettingsDrawer({
                 </section>
 
                 <section className="border border-border bg-background/70">
-                  {(() => {
-                    const header = (
-                      <button
-                        type="button"
-                        onClick={touchOnly ? () => setRewardInlineOpen((current) => !current) : undefined}
-                        aria-expanded={touchOnly ? rewardInlineOpen : undefined}
-                        className="flex w-full items-start gap-3 p-3.5 text-left transition-colors hover:bg-muted/20"
-                      >
-                        <span className="inline-flex size-9 shrink-0 items-center justify-center border border-border bg-muted/40 text-foreground">
-                          <Coffee className="size-4" />
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">{messages.projectSupportTitle}</span>
-                            {touchOnly && (
-                              <ChevronDown
-                                className={cn(
-                                  "size-3.5 shrink-0 text-muted-foreground transition-transform",
-                                  rewardInlineOpen && "rotate-180"
-                                )}
-                              />
-                            )}
-                          </span>
-                          <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                            {messages.projectSupportDescription}
-                          </span>
-                        </span>
-                      </button>
-                    );
-
-                    if (!touchOnly) {
-                      return (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>{header}</TooltipTrigger>
-                            <TooltipContent
-                              side="bottom"
-                              align="end"
-                              collisionPadding={16}
-                              className="z-[10020] p-3"
-                              style={{ width: rewardTipWidth }}
-                            >
-                              <RewardPanel
-                                messages={messages}
-                                onImageClick={() => setRewardZoomOpen(true)}
-                              />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      );
-                    }
-
-                    return header;
-                  })()}
-
-                  {touchOnly && rewardInlineOpen && (
-                    <div className="border-t border-border px-3.5 py-3">
-                      <div className="w-72 max-w-full">
-                        <RewardPanel messages={messages} onImageClick={() => setRewardZoomOpen(true)} />
-                      </div>
+                  <div className="p-3.5">
+                    {hoverCapable === true ? (
+                      <TooltipProvider>
+                        <Tooltip open={rewardPreviewOpen && !rewardZoomOpen} onOpenChange={setRewardPreviewOpen}>
+                          <TooltipTrigger asChild>{rewardTrigger}</TooltipTrigger>
+                          <TooltipContent
+                            side={isMobile ? "bottom" : "right"}
+                            align={isMobile ? "start" : "center"}
+                            collisionPadding={16}
+                            className="z-[10020] overflow-y-auto p-3"
+                            style={{
+                              width: "min(320px, calc(100vw - 32px), calc(100dvh - 112px))",
+                              maxHeight: "var(--radix-tooltip-content-available-height)",
+                            }}
+                          >
+                            <RewardPanel messages={messages} onImageClick={openRewardZoom} />
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ) : rewardTrigger}
+                    <p className="ml-12 mt-1 text-xs leading-relaxed text-muted-foreground">
+                      {messages.projectSupportDescription}
+                    </p>
+                  </div>
+                  {touchOnly && (
+                    <div id={rewardPanelId} hidden={!rewardInlineOpen} className="border-t border-border px-3.5 py-3">
+                      {rewardInlineOpen && (
+                        <div className="mx-auto w-full max-w-80">
+                          <RewardPanel messages={messages} onImageClick={openRewardZoom} />
+                        </div>
+                      )}
                     </div>
                   )}
                 </section>
@@ -991,11 +990,9 @@ export function SettingsDrawer({
               </button>
             </div>
             <div className="min-h-0 flex-1 overflow-auto p-3">
-              <img
-                src={rewardCoverImageUrl}
-                alt={messages.projectSupportTitle}
-                className="mx-auto h-auto w-full border border-border"
-              />
+              <div className="border border-border">
+                <RewardImage messages={messages} />
+              </div>
             </div>
             <p className="border-t border-border px-4 py-2.5 text-center text-[11px] leading-relaxed text-muted-foreground">
               {messages.projectSupportScanHint}

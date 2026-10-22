@@ -5,7 +5,7 @@ import { type ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { type HeatmapMessages } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { rewardCoverImageUrl } from "./constants";
+import { RewardImage } from "./reward-image";
 import { useHoverCapable } from "./stream";
 
 /** 赞赏码浮层里的内容：完整封面（不裁切）+ 扫码提示。 */
@@ -16,14 +16,7 @@ export function RewardPanel({
   messages: HeatmapMessages;
   onImageClick?: () => void;
 }) {
-  const image = (
-    <img
-      src={rewardCoverImageUrl}
-      alt={messages.projectSupportTitle}
-      decoding="async"
-      className="block h-auto w-full"
-    />
-  );
+  const image = <RewardImage messages={messages} />;
 
   return (
     <>
@@ -31,6 +24,10 @@ export function RewardPanel({
         <button
           type="button"
           onClick={onImageClick}
+          onPointerDown={(event) => {
+            // Keep the tooltip trigger focused until the image click is delivered.
+            if (event.pointerType === "mouse") event.preventDefault();
+          }}
           aria-label={messages.projectSupportZoomHint}
           className="block w-full cursor-zoom-in border border-border transition-colors hover:border-brand/60"
         >
@@ -96,7 +93,15 @@ export function RewardTipTrigger({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-        <TooltipContent side={side} className="p-3" style={{ width }}>
+        <TooltipContent
+          side={side}
+          collisionPadding={16}
+          className="overflow-y-auto p-3"
+          style={{
+            width: `min(${width}px, calc(100vw - 32px), calc(100dvh - 96px))`,
+            maxHeight: "var(--radix-tooltip-content-available-height)",
+          }}
+        >
           <RewardPanel messages={messages} />
         </TooltipContent>
       </Tooltip>
