@@ -100,7 +100,7 @@ export function SettingsDrawer({
   const [copiedWebmcpPrompt, setCopiedWebmcpPrompt] = useState<string | null>(null);
   const [intervalDraft, setIntervalDraft] = useState(() => String(refreshIntervalSeconds));
   const hoverCapable = useHoverCapable();
-  // 桌面端悬停标题预览、点击放大；触屏设备默认在卡片内展开。
+  // 桌面端悬停整张卡片预览、点击放大；触屏设备默认在卡片内展开。
   // 解析前（null）按未展开渲染，避免首帧先展开再收起的闪动。
   const rewardPanelId = useId();
   const touchOnly = hoverCapable === false;
@@ -293,6 +293,8 @@ export function SettingsDrawer({
       aria-haspopup={touchOnly ? undefined : "dialog"}
       className="inline-flex max-w-full items-center gap-3 text-left transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
     >
+      {/* 扩展按钮命中区域到整张卡片，保留标题尺寸作为浮层定位锚点。 */}
+      <span aria-hidden className="absolute inset-0" />
       <span className="inline-flex size-9 shrink-0 items-center justify-center border border-border bg-muted/40">
         <Coffee className="size-4" />
       </span>
@@ -890,7 +892,7 @@ export function SettingsDrawer({
                 </section>
 
                 <section className="border border-border bg-background/70">
-                  <div className="p-3.5">
+                  <div className="relative p-3.5">
                     {hoverCapable === true ? (
                       <TooltipProvider>
                         <Tooltip open={rewardPreviewOpen && !rewardZoomOpen} onOpenChange={setRewardPreviewOpen}>
